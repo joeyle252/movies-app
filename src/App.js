@@ -6,48 +6,55 @@ import MoviesList from './components/MoviesList.js'
 
 let apiKey = process.env.REACT_APP_APIKEY;
 
+function PageButton(props) {
+  return (
+    <button onClick={props.onClick}>Next Page</button>
+  )
+}
+
 function App() {
   let [movies, setMovies] = useState([]);
   let [filterText, setFilterText] = useState('');
-
-  // let genres = async () => {
-  //   let url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`
-  //   let data = await fetch(url);
-  //   let dataResults = await data.json();
-  //   console.log("genres", dataResults);
-  //   // setMovies(dataResults.results)
-  // }
+  let [page, setPage] = useState(1);
 
   let sortByPopularity = () => {
     const sortedMovies = [...movies]; // spread operator
-    // console.log('sort',movies.sort((a,b)=> b.popularity -a.popularity))
-    sortedMovies.sort((a,b)=> b.popularity -a.popularity);
+    sortedMovies.sort((a, b) => b.popularity - a.popularity);
     console.log('sortedMovies after', sortedMovies);
     setMovies(sortedMovies);
   }
-  
 
-  let nowPlayingMovie = async () => {
-    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
+
+  let nowPlayingMovie = async (pageValue) => {
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=${pageValue}`
+    console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
     console.log("data", dataResults);
     setMovies(dataResults.results)
   }
-  useEffect(nowPlayingMovie, []);
+  useEffect(() => nowPlayingMovie(page), []);
+
   return (
     <div>
-    <div className="navBar">
+      <div className="navBar">
 
-      <NavBar 
-        setFilterText = {setFilterText} 
-        sortByPopularity={sortByPopularity}
-       />
+        <NavBar
+          setFilterText={setFilterText}
+          sortByPopularity={sortByPopularity}
+        />
       </div>
       <div className="moviesContainer">
-      < MoviesList moviesList={movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
-      
-    </div>
+        < MoviesList moviesList={movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
+        < PageButton onClick={() => {
+          // setPage (page + 1);
+          const newPage = page + 1;
+          setPage(newPage);
+          nowPlayingMovie(newPage)
+        }}/>
+        <h3>page: {page}</h3>
+      </div>
+
     </div>
 
   );

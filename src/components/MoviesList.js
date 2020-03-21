@@ -1,5 +1,7 @@
 
 import React from 'react';
+import LazyLoad from 'react-lazyload';
+
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 function MoviesList(props) {
@@ -7,8 +9,10 @@ function MoviesList(props) {
     let htmlMovie = props.moviesList.map((movie,index) => {
         return (
             <div className="col-md-3" key = {index}>
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`} />
+                <Card>
+                <LazyLoad>
+                    <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />
+                    </LazyLoad>
                     <Card.Body>
                         <Card.Title>{movie.title}</Card.Title>
                         <Card.Text> {movie.overview}</Card.Text>
