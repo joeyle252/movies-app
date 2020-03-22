@@ -5,9 +5,6 @@ import NavBar from './components/NavBar.js'
 import MoviesList from './components/MoviesList.js'
 
 
-let apiKey = process.env.REACT_APP_APIKEY;
-
-
 function PageButton(props) {
   return (
     <button onClick={props.onClick}>Next Page</button>
@@ -35,7 +32,7 @@ function App() {
   }
 
   let nowPlayingMovie = async (pageValue) => {
-    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=${pageValue}`
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_APIKEY}&language=en-US&page=${pageValue}`
     console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
