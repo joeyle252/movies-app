@@ -1,31 +1,34 @@
 
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
-function MoviesList(props) {
+function AnimationMovies(props) {
 
-    let htmlMovie = props.moviesList.map((movie,index) => {
+    let htmlAnimation = props.animationMovies.filter((animationMovie)=>{
+    if (animationMovie.genre_ids.includes(16)) {
+        return true
+    }
+})
         return (
-            <div className="col-md-3" key = {index}>
+            <div className="col-md-3">
                 <Card className="cardBody">
                 <LazyLoad>
-                    <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />
+                    <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w300${props.animationMovies.poster_path}`} />
                     </LazyLoad>
                     <Card.Body className="cardText">
-                        <Card.Title>{movie.title}</Card.Title>
-                        <Card.Text > {movie.overview}</Card.Text>
+                        <Card.Title>{props.filterAnimation.title}</Card.Title>
+                        <Card.Text > {props.filterAnimation.overview}</Card.Text>
                     </Card.Body>
                     <ListGroup className="list-group-flush">
                         <ListGroupItem>
-                            Popularity: {movie.popularity}
+                            Popularity: {props.filterAnimation.popularity}
                         </ListGroupItem>
                         <ListGroupItem>
-                            Vote Average: {movie.vote_average}
+                            Vote Average: {props.filterAnimation.vote_average}
                         </ListGroupItem>
                         <ListGroupItem>
-                            Release date: {movie.release_date}
+                            Release date: {props.filterAnimation.release_date}
                         </ListGroupItem>
                     </ListGroup>
                     <Card.Body>
@@ -36,12 +39,11 @@ function MoviesList(props) {
 
             </div>
         )
-    })
     return (
         <div className="row">
-            {htmlMovie}
+            {htmlAnimation}
         </div>
     );
 }
 
-export default MoviesList;
+export default AnimationMovies;

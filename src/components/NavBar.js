@@ -26,6 +26,7 @@ function NavBar(props) {
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(e) => { setKeyword(e.target.value) }} />
             <Button onClick={() => props.setFilterText(keyword)} variant="outline-success">Search</Button>
             <Button onClick={()=>props.sortByPopularity()} variant="outline-success"> The Most Popular </Button>
+            <Button onClick={()=>props.sortByVoteAverage()} variant="outline-success"> Sort By Vote Average </Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>
