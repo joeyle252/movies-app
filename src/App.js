@@ -39,7 +39,7 @@ function App() {
     console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
-    console.log("dataanimation", dataResults);
+    console.log("nowplaying movie", dataResults);
     setMovies(dataResults.results)
   }
   
