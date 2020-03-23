@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import NavBar from './components/NavBar.js'
 import MoviesList from './components/MoviesList.js'
+import ReactModal from 'react-modal';
+import YouTube from '@u-wave/react-youtube';
 
 
 function PageButton(props) {
@@ -12,10 +14,23 @@ function PageButton(props) {
 }
 
 function App() {
-  
+  let [modal,setModal]=useState(false);
   let [movies, setMovies] = useState([]);
   let [filterText, setFilterText] = useState('');
   let [page, setPage] = useState(1);
+
+//NHAN ADDS HERE:
+  let [trailer,setTrailer]= useState('');
+
+  let openModal=async(movieId)=>{
+    let url=`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
+    let data=await fetch(url);
+    let resultData=await data.json();
+    console.log("AEFWEFWEFWEF:", resultData) 
+    setTrailer(resultData.results[0].key)
+    setModal(true);
+  }
+//NHAN ADDS HERE:
 
 
   let sortByPopularity = () => {
@@ -31,8 +46,12 @@ function App() {
     setMovies(sortedMovies)
   }
 
+//NHAN FIXES APIKEY HERE:
+  let apiKey = process.env.REACT_APP_APIKEY;
   let nowPlayingMovie = async (pageValue) => {
-    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_APIKEY}&language=en-US&page=${pageValue}`
+    console.log("here",pageValue);
+
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=${pageValue}`
     console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
@@ -41,6 +60,14 @@ function App() {
   }
   
   useEffect(() => nowPlayingMovie(page), []);
+
+  if(movies == [null]){
+    return (
+      <div>
+        LOADING LOADING LOADING
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -53,8 +80,16 @@ function App() {
         />
       </div>
       <div className="moviesContainer">
-        < MoviesList moviesList={movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
-        <div className="pageButton">
+        <MoviesList openModal={openModal} moviesList={ movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
+        {/* //NHAN ADDS HERE:        */}
+        <ReactModal
+        isOpen={modal}
+        // style={{ overlay: {display:"flex",justifyContent:"center",alignItems:"center"}, content: {position:"relative",width:"70%",height:"70%"} }}
+        onRequestClose={()=>setModal(false)}>
+        <YouTube video={trailer} autoplay className="video"/>
+
+        </ReactModal>
+        <div className="pageButton">  
         < PageButton onClick={() => {
           // setPage (page + 1);
           const newPage = page + 1;
