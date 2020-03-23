@@ -6,6 +6,7 @@ function NavBar(props) {
   const [keyword, setKeyword] = useState('');
   
   return (
+
     <div className="navBar">
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="#home">Khanh's Movies</Navbar.Brand>

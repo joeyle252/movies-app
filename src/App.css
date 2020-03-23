@@ -3,7 +3,6 @@
   margin-right: 10%;
 }
 
-
 .pageButton {
   margin: 2% auto;
   
@@ -29,4 +28,13 @@
   background-color: black;
 
 }
-
+.inputRange {
+  height: 1rem;
+  width: 500px;
+  margin: 5% auto;
+}
+.inputRange > p {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}

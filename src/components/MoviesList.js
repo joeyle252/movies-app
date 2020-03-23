@@ -4,6 +4,8 @@ import LazyLoad from 'react-lazyload';
 
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
+
+
 function MoviesList(props) {
 
     let htmlMovie = props.moviesList.map((movie,index) => {
@@ -22,7 +24,7 @@ function MoviesList(props) {
                             Popularity: {movie.popularity}
                         </ListGroupItem>
                         <ListGroupItem>
-                            Vote Average: {movie.vote_average}
+                            Vote Average: ❤️{movie.vote_average}
                         </ListGroupItem>
                         <ListGroupItem>
                             Release date: {movie.release_date}
