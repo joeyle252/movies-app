@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
-import MoviesList from './MoviesList';
+// import MoviesList from './MoviesList';
 
 function NavBar(props) {
   const [keyword, setKeyword] = useState('');

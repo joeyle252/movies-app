@@ -6,24 +6,40 @@ import MoviesList from './components/MoviesList.js'
 import ReactModal from 'react-modal';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css'
+import Pagination from "react-js-pagination";
 
 
+import YouTube from '@u-wave/react-youtube';
 
 
-function PageButton(props) {
-  return (
-    <button onClick={props.onClick}>Next Page</button>
-  )
-}
+// function PageButton(props) {
+//   return (
+//     <button onClick={props.onClick}>Next Page</button>
+//   )
+// }
 
 function App() {
-  
+  let [modal,setModal]=useState(false);
   let [movies, setMovies] = useState([]);
-  let [modal,setModal] = useState (false);
+  
   let [filterText, setFilterText] = useState('');
   let [page, setPage] = useState(1);
   let [rate,setRate] = useState(0);
   let moviesList =[];
+  
+
+//NHAN ADDS HERE:
+  let [trailer,setTrailer]= useState('');
+
+  let openModal=async(movieId)=>{
+    let url=`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
+    let data=await fetch(url);
+    let resultData=await data.json();
+    console.log("AEFWEFWEFWEF:", resultData) 
+    setTrailer(resultData.results[0].key)
+    setModal(true);
+  }
+//NHAN ADDS HERE:
 
 
   let sortByPopularity = () => {
@@ -39,10 +55,13 @@ function App() {
     setMovies(sortedMovies)
   }
 
-  
+//NHAN FIXES APIKEY HERE:
+  let apiKey = process.env.REACT_APP_APIKEY;
 
-  let nowPlayingMovie = async (pageValue) => {
-    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_APIKEY}&language=en-US&page=${pageValue}`
+  let nowPlayingMovie = async () => {
+    // console.log('pagenumber',pageNumber)
+
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
     console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
@@ -50,6 +69,7 @@ function App() {
     moviesList = dataResults.results;
     console.log('moviesList',moviesList)
     setMovies(dataResults.results)
+    
   }
 
   let searchByRate = (value)=>{
@@ -58,9 +78,27 @@ function App() {
     console.log('filterdata',filteredData)
     setMovies(filteredData)
   }
+  let handlePageChange = async (pageNumber) =>{
+    console.log(`active page is ${pageNumber}`);
+    setPage(pageNumber);
+    let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=${pageNumber}`
+    console.log('nowPlaying - url: ', url);
+    let data = await fetch(url);
+    let dataResults = await data.json();
+    console.log("nowplaying movie", dataResults);
+    setMovies(dataResults.results)
+    
+  }
   
-  useEffect(() => nowPlayingMovie(page), []);
+  useEffect (nowPlayingMovie, []);
 
+  if(movies == [null]){
+    return (
+      <div>
+        LOADING LOADING LOADING
+      </div>
+    )
+  }
   return (
     <div>
       <div className="navBar">
@@ -80,20 +118,17 @@ function App() {
         onChange={value => searchByRate(value)} />
       </div>
       <div className="moviesContainer">
-        < MoviesList moviesList={movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
-        < ReactModal
-        isOpen = {modal}
-        style = {{overlay:{display:"flex",justifyContent:"center",position:"relative",aligItems:"center"},contents:{width: "70%",height:"70%"}}}
-        onRequestClose = {()=>setModal(false)}
-        > 
+        <MoviesList openModal={openModal} moviesList={ movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
+        {/* //NHAN ADDS HERE:        */}
+        <ReactModal
+        isOpen={modal}
+        // style={{ overlay: {display:"flex",justifyContent:"center",alignItems:"center"}, content: {position:"relative",width:"70%",height:"70%"} }}
+        onRequestClose={()=>setModal(false)}>
+        <YouTube video={trailer} autoplay className="video"/>
+
         </ReactModal>
-        <div className="pageButton">
-        < PageButton onClick={() => {
-          // setPage (page + 1);
-          const newPage = page -1;
-          setPage(newPage);
-          nowPlayingMovie(newPage)
-        }}/>
+        {/* <div className="pageButton">  
+        
         < PageButton onClick={() => {
           // setPage (page + 1);
           const newPage = page + 1;
@@ -101,9 +136,19 @@ function App() {
           nowPlayingMovie(newPage)
         }}/>
         <h3>Page: {page}</h3>
-        </div>
+        </div> */}
       </div>
-
+      <div className="pagination">
+      <Pagination
+          activePage={page}
+          itemsCountPerPage={20}
+          totalItemsCount={450}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+          itemClass="page-item"
+          linkClass="page-link"
+        />
+        </div>
     </div>
 
   );

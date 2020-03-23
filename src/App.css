@@ -3,6 +3,10 @@
   margin-right: 10%;
 }
 
+.video{
+  width: 100%;
+  height: 100%; 
+}
 .pageButton {
   margin: 2% auto;
   
@@ -32,9 +36,13 @@
   height: 1rem;
   width: 500px;
   margin: 5% auto;
+  
 }
 .inputRange > p {
   font-size: 20px;
   display: flex;
   justify-content: center;
+}
+.pagination {
+  margin: 1% auto;
 }

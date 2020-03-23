@@ -31,7 +31,7 @@ function MoviesList(props) {
                         </ListGroupItem>
                     </ListGroup>
                     <Card.Body>
-                        <Card.Link href="#">View Trailer</Card.Link>
+                        <Card.Link href="#" onClick={()=>props.openModal(movie.id)}>View Trailer</Card.Link>
                         <Card.Link href="#">Full Movie</Card.Link>
                     </Card.Body>
                 </Card>
