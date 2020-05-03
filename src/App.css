@@ -1,3 +1,5 @@
+
+
 .moviesContainer {
   margin-left: 10%;
   margin-right: 10%;
@@ -47,10 +49,18 @@
   margin: 1% auto;
 }
 
+.cards-container{
+  background-color: black;
+}
+
+body{
+  background-color: black;
+}
 
 /* animation for card */
 .flipcart-container{
 border: none;
+margin-bottom: 10px;
 }
 
 .flipcart-container:hover .flipcart {

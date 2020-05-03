@@ -23,7 +23,7 @@ function NavBar(props) {
             </NavDropdown>
           </Nav>
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(e) => { setKeyword(e.target.value) }} />
+            <FormControl type="text" placeholder="Search movies..." className="mr-sm-2" onChange={(e) => { setKeyword(e.target.value) }} />
             <Button onClick={() => props.setFilterText(keyword)} variant="outline-success">Search</Button>
             <Button onClick={()=>props.sortByPopularity()} variant="outline-success"> The Most Popular </Button>
             <Button onClick={()=>props.sortByVoteAverage()} variant="outline-success"> Sort By Vote Average </Button>

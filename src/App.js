@@ -21,14 +21,10 @@ import YouTube from '@u-wave/react-youtube';
 function App() {
   let [modal,setModal]=useState(false);
   let [movies, setMovies] = useState([]);
-  
   let [filterText, setFilterText] = useState('');
   let [page, setPage] = useState(1);
   let [rate,setRate] = useState(0);
   let moviesList =[];
-  
-
-//NHAN ADDS HERE:
   let [trailer,setTrailer]= useState('');
 
   let openModal=async(movieId)=>{
@@ -39,8 +35,6 @@ function App() {
     setTrailer(resultData.results[0].key)
     setModal(true);
   }
-//NHAN ADDS HERE:
-
 
   let sortByPopularity = () => {
     const sortedMovies = [...movies]; // spread operator
@@ -55,12 +49,9 @@ function App() {
     setMovies(sortedMovies)
   }
 
-//NHAN FIXES APIKEY HERE:
   let apiKey = process.env.REACT_APP_APIKEY;
 
   let nowPlayingMovie = async () => {
-    // console.log('pagenumber',pageNumber)
-
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=1`
     console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
@@ -69,30 +60,28 @@ function App() {
     moviesList = dataResults.results;
     console.log('moviesList',moviesList)
     setMovies(dataResults.results)
-    
   }
 
   let searchByRate = (value)=>{
     setRate(value);
-    let filteredData = moviesList.filter((movie)=>movie.vote_average >= value)
-    console.log('filterdata',filteredData)
+    const filteredMovies = [...movies];
+    let filteredData = filteredMovies.filter((movie)=>movie.vote_average >= value)
+    console.log('filterdata',filteredData) 
     setMovies(filteredData)
   }
   let handlePageChange = async (pageNumber) =>{
     console.log(`active page is ${pageNumber}`);
     setPage(pageNumber);
     let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&page=${pageNumber}`
-    console.log('nowPlaying - url: ', url);
     let data = await fetch(url);
     let dataResults = await data.json();
     console.log("nowplaying movie", dataResults);
     setMovies(dataResults.results)
-    
   }
   
   useEffect (nowPlayingMovie, []);
 
-  if(movies == [null]){
+  if(movies === [null]){
     return (
       <div>
         LOADING LOADING LOADING
@@ -117,7 +106,8 @@ function App() {
         onChange={value => searchByRate(value)} />
       </div>
       <div className="moviesContainer">
-        <MoviesList openModal={openModal} moviesList={ movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
+        <MoviesList openModal={openModal} 
+        moviesList={ movies.filter((movie) => movie.title.toLowerCase().includes(filterText))} />
         {/* //NHAN ADDS HERE:        */}
         <ReactModal
         isOpen={modal}
@@ -149,7 +139,6 @@ function App() {
         />
         </div>
     </div>
-
   );
 }
 
