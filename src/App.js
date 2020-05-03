@@ -35,7 +35,7 @@ function App() {
     let url=`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
     let data=await fetch(url);
     let resultData=await data.json();
-    console.log("AEFWEFWEFWEF:", resultData) 
+    console.log("result data:", resultData) 
     setTrailer(resultData.results[0].key)
     setModal(true);
   }
@@ -102,7 +102,6 @@ function App() {
   return (
     <div>
       <div className="navBar">
-
         <NavBar
           setFilterText={setFilterText}
           sortByPopularity={sortByPopularity}

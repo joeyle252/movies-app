@@ -46,3 +46,32 @@
 .pagination {
   margin: 1% auto;
 }
+
+
+/* animation for card */
+.flipcart-container{
+border: none;
+}
+
+.flipcart-container:hover .flipcart {
+  transform: rotateY(180deg)
+}
+
+.flipcart {
+  margin-bottom: 10px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.front , .back {
+  backface-visibility: hidden
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+.front {
+  position: absolute;
+}
+ 
