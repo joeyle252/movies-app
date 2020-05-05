@@ -15,10 +15,7 @@ function MoviesList(props) {
                             <LazyLoad>
                                 <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />
                             </LazyLoad>
-                            <Card.Title>{movie.title} </Card.Title>
-                            <Card.Title>
-                                <span> {movie.vote_average}❤ </span>
-                            </Card.Title>
+                            <Card.Title>{movie.title} - {movie.vote_average}❤</Card.Title>
                         </div>
                         <div className="back">
                             <Card.Body className="cardText">
